@@ -3,7 +3,7 @@ import Link from "next/link";
 import style from "./layout.module.css";
 import { BookData } from "@/types";
 
-export async function Footer() {
+async function Footer() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`
   );
