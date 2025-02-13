@@ -1,4 +1,14 @@
+import { notFound } from "next/navigation";
 import style from "./page.module.css";
+
+// generateStaticParams()로 생성된 페이지 외에 모든 페이지는 다 404페이로 리다이렉트 처리
+// export const dynamicParams = false;
+
+// 동적 경로를 같은 페이지를 Static Page로 만들기 위한 parmas를 정적으로 생성하는 함수
+// Page Router의 getStaticPath 와 동일한 역할을 한다.
+export function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
 
 export default async function Page({
   params,
@@ -10,6 +20,9 @@ export default async function Page({
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${(await params).id}`
   );
   if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
     return <div>오류가 발생했습니다...</div>;
   }
   const book = await response.json();
