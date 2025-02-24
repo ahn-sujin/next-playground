@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { createReviewAction } from "@/actions/create-review.action";
 import style from "./page.module.css";
 
 // generateStaticParams()로 생성된 페이지 외에 모든 페이지는 다 404페이로 리다이렉트 처리
@@ -32,7 +33,7 @@ async function BookDetail({ bookId }: { bookId: string }) {
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
       >
-        <img src={coverImgUrl} />
+        <img src={coverImgUrl} alt="책표지" />
       </div>
       <div className={style.title}>{title}</div>
       <div className={style.subTitle}>{subTitle}</div>
@@ -44,21 +45,13 @@ async function BookDetail({ bookId }: { bookId: string }) {
   );
 }
 
-function ReviewEditor() {
-  async function createReviewAction(formData: FormData) {
-    "use server";
-
-    const content = formData.get("content")?.toString();
-    const author = formData.get("author")?.toString();
-
-    console.log(content, author);
-  }
-
+function ReviewEditor({ bookId }: { bookId: string }) {
   return (
     <section>
       <form action={createReviewAction}>
-        <input name="content" placeholder="리뷰 내용" />
-        <input name="author" placeholder="작성자" />
+        <input name="bookId" value={bookId} hidden readOnly />
+        <input required name="content" placeholder="리뷰 내용" />
+        <input required name="author" placeholder="작성자" />
         <button type="submit">작성하기</button>
       </form>
     </section>
@@ -69,7 +62,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className={style.container}>
       <BookDetail bookId={params.id} />
-      <ReviewEditor />
+      <ReviewEditor bookId={params.id} />
     </div>
   );
 }
