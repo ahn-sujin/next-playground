@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
-import style from "./page.module.css";
 import { ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
+
+import style from "./page.module.css";
 
 // generateStaticParams()로 생성된 페이지 외에 모든 페이지는 다 404페이로 리다이렉트 처리
 // export const dynamicParams = false;
@@ -35,7 +37,12 @@ async function BookDetail({ bookId }: { bookId: string }) {
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
       >
-        <img src={coverImgUrl} alt="책표지" />
+        <Image
+          src={coverImgUrl}
+          width={240}
+          height={300}
+          alt={`도서 ${title}의 표지 이미지`}
+        />
       </div>
       <div className={style.title}>{title}</div>
       <div className={style.subTitle}>{subTitle}</div>
