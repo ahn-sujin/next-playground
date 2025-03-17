@@ -1,12 +1,12 @@
 import { Suspense } from "react";
+import { Metadata } from "next/types";
 
-import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
 import { delay } from "@/util/delay";
+import BookItem from "@/components/book-item";
+import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 
 import style from "./page.module.css";
-import BookItemSkeleton from "@/components/skeleton/book-item-skeleton";
-import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 
 // 특정 페이지의 유형을 강제로 Static, Dynamic 페이지로 설정
 export const dynamic = "force-dynamic";
@@ -57,6 +57,16 @@ async function AllBooks() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "한입 북스",
+  description: "한입 북스에 등록된 도서를 만나보세요",
+  openGraph: {
+    title: "한입 북스",
+    description: "한입 북스에 등록된 도서를 만나보세요",
+    images: ["/thumbnail.png"],
+  },
+};
 
 export default function Home() {
   return (
