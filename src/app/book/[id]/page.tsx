@@ -1,20 +1,32 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { Metadata } from "next/types";
 
 import { BookData, ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
 
 import style from "./page.module.css";
-import { Metadata } from "next/types";
 
 // generateStaticParams()로 생성된 페이지 외에 모든 페이지는 다 404페이로 리다이렉트 처리
 // export const dynamicParams = false;
 
 // 동적 경로를 같은 페이지를 Static Page로 만들기 위한 parmas를 정적으로 생성하는 함수
 // Page Router의 getStaticPath 와 동일한 역할을 한다.
-export function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+export async function generateStaticParams() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const books: BookData[] = await response.json();
+
+  return books.map((book) => ({
+    id: book.id.toString(),
+  }));
 }
 
 async function BookDetail({ bookId }: { bookId: string }) {
