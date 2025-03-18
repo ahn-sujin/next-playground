@@ -1,17 +1,32 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
+import { Metadata } from "next/types";
 
-import style from "./page.module.css";
-import { ReviewData } from "@/types";
+import { BookData, ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
+
+import style from "./page.module.css";
 
 // generateStaticParams()로 생성된 페이지 외에 모든 페이지는 다 404페이로 리다이렉트 처리
 // export const dynamicParams = false;
 
 // 동적 경로를 같은 페이지를 Static Page로 만들기 위한 parmas를 정적으로 생성하는 함수
 // Page Router의 getStaticPath 와 동일한 역할을 한다.
-export function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+export async function generateStaticParams() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const books: BookData[] = await response.json();
+
+  return books.map((book) => ({
+    id: book.id.toString(),
+  }));
 }
 
 async function BookDetail({ bookId }: { bookId: string }) {
@@ -24,7 +39,7 @@ async function BookDetail({ bookId }: { bookId: string }) {
     }
     return <div>오류가 발생했습니다...</div>;
   }
-  const book = await response.json();
+  const book: BookData = await response.json();
 
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
     book;
@@ -35,7 +50,12 @@ async function BookDetail({ bookId }: { bookId: string }) {
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
       >
-        <img src={coverImgUrl} alt="책표지" />
+        <Image
+          src={coverImgUrl}
+          width={240}
+          height={300}
+          alt={`도서 ${title}의 표지 이미지`}
+        />
       </div>
       <div className={style.title}>{title}</div>
       <div className={style.subTitle}>{subTitle}</div>
@@ -68,12 +88,46 @@ async function ReviewList({ bookId }: { bookId: string }) {
   );
 }
 
-export default function Page({ params }: { params: { id: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const book: BookData = await response.json();
+
+  return {
+    title: `${book.title} - 한입 북스`,
+    description: `${book.description}`,
+    openGraph: {
+      title: `${book.title} - 한입 북스`,
+      description: `${book.description}`,
+      images: [book.coverImgUrl],
+    },
+  };
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   return (
     <div className={style.container}>
-      <BookDetail bookId={params.id} />
-      <ReviewEditor bookId={params.id} />
-      <ReviewList bookId={params.id} />
+      <BookDetail bookId={id} />
+      <ReviewEditor bookId={id} />
+      <ReviewList bookId={id} />
     </div>
   );
 }
