@@ -1,7 +1,8 @@
 # Todo List
 > 이 프로젝트는 supabase를 이용해 todo list를 구현했습니다.
 
-<img width="425" alt="스크린샷 2025-03-09 오전 12 20 13" src="https://github.com/user-attachments/assets/b5cd8e31-03b1-4875-903f-3f598a0695e2" />
+<img width="425" alt="스크린샷 2025-03-09 오전 12 20 13" src="https://github.com/user-attachments/assets/3cfef813-5612-4dab-99c6-5afcb871041f" />
+
 
 ## 1️⃣ 실행 방법
 1. 프로젝트 clone or Download ZIP
