@@ -1,10 +1,24 @@
-const Page = () => {
+"use client";
+
+import { useEffect, useState } from "react";
+
+export default function Page() {
+  const [data, setData] = useState<number[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setData((prev) => [...prev, Math.random()]); // 계속 메모리에 쌓임
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <div>
-      <h1>Welcome to the OOM Page</h1>
-      <p>This is a basic Next.js page.</p>
+      <h1>Memory Leak Example</h1>
+      <p>Data length: {data.length}</p>
     </div>
   );
-};
-
-export default Page;
+}
