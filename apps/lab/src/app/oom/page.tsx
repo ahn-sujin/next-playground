@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Page() {
   const [data, setData] = useState<number[]>([]);
@@ -19,6 +20,7 @@ export default function Page() {
     <div>
       <h1>Memory Leak Example</h1>
       <p>Data length: {data.length}</p>
+      <Link href="/oom/example">이동하기</Link>
     </div>
   );
 }
