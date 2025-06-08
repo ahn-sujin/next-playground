@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Header
+      {/* <Header
         left={
           <>
             <Link href="/">홈</Link>
@@ -23,7 +23,7 @@ export default function RootLayout({
             <Link href="/">마이</Link>
           </>
         }
-      />
+      /> */}
       {children}
       <NavigationBar />
     </>
