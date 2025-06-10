@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { NavLinks } from "@/components/molecules/NavLinks";
-import AnimationProvider from "@/provider/AnimationProvider";
-import { RouterWrapperProvider } from "@/provider/RouterWrapperProvider";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,12 +27,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <RouterWrapperProvider>
-          <AnimationProvider>
-            <NavLinks />
-            <main> {children}</main>
-          </AnimationProvider>
-        </RouterWrapperProvider>
+        <main> {children}</main>
       </body>
     </html>
   );
