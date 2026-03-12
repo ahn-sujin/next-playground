@@ -1,5 +1,11 @@
 {
-  "HomePage": {
-    "title": "안녕하세요!"
+  "common": {
+    "title": "안녕하세요",
+    "submit": "제출",
+    "cancel": "취소"
+  },
+  "about": {
+    "title": "회사 소개",
+    "description": "저희는 ASJ입니다"
   }
 }

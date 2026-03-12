@@ -1,5 +1,11 @@
 {
-  "HomePage": {
-    "title": "こんにちは!"
+  "common": {
+    "title": "ようこそ",
+    "submit": "送信する",
+    "cancel": "キャンセル"
+  },
+  "about": {
+    "title": "私たちについて",
+    "description": "私たちはASJです"
   }
 }
